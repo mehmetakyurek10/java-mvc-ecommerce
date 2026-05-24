@@ -29,8 +29,6 @@ public class DBConnection {
             user = props.getProperty("db.user");
             password = props.getProperty("db.password");
             String driver = props.getProperty("db.driver");
-
-            // MySQL sürücüsünü yükle
             Class.forName(driver);
 
         } catch (IOException | ClassNotFoundException e) {
