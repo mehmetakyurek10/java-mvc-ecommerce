@@ -1,5 +1,6 @@
 package com.eticaret.controller;
 
+import com.eticaret.dao.CategoryDAO;
 import com.eticaret.dao.ProductDAO;
 import com.eticaret.model.CartItem;
 import com.eticaret.model.Product;
@@ -18,15 +19,18 @@ import java.util.List;
 public class CartServlet extends HttpServlet {
 
     private ProductDAO productDAO;
+    private CategoryDAO categoryDAO;
 
     @Override
     public void init() {
         productDAO = new ProductDAO();
+        categoryDAO = new CategoryDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("categories", categoryDAO.getAllCategories());
         request.getRequestDispatcher("/WEB-INF/cart.jsp").forward(request, response);
     }
 
@@ -47,7 +51,7 @@ public class CartServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
 
             Product product = productDAO.getProductById(productId);
-            if (product != null && product.getStock() >= quantity) {
+            if (product != null && product.isActive() && product.getStock() >= quantity) {
                 boolean exists = false;
                 for (CartItem item : cart) {
                     if (item.getProduct().getId() == productId) {

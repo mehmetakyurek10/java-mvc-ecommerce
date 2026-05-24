@@ -1,5 +1,6 @@
 package com.eticaret.controller;
 
+import com.eticaret.dao.CategoryDAO;
 import com.eticaret.dao.OrderDAO;
 import com.eticaret.dao.OrderItemDAO;
 import com.eticaret.dao.ProductDAO;
@@ -20,18 +21,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = { "/order", "/my-orders" })
+@WebServlet(urlPatterns = { "/order", "/my-orders", "/my-order-detail" })
 public class OrderServlet extends HttpServlet {
 
     private OrderDAO orderDAO;
     private OrderItemDAO orderItemDAO;
     private ProductDAO productDAO;
+    private CategoryDAO categoryDAO;
 
     @Override
     public void init() {
         orderDAO = new OrderDAO();
         orderItemDAO = new OrderItemDAO();
         productDAO = new ProductDAO();
+        categoryDAO = new CategoryDAO();
     }
 
     @Override
@@ -45,11 +48,29 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
+        request.setAttribute("categories", categoryDAO.getAllCategories());
         String path = request.getServletPath();
         if ("/my-orders".equals(path)) {
             List<Order> myOrders = orderDAO.getOrdersByUserId(user.getId());
             request.setAttribute("orders", myOrders);
             request.getRequestDispatcher("/WEB-INF/my-orders.jsp").forward(request, response);
+        } else if ("/my-order-detail".equals(path)) {
+            String idParam = request.getParameter("id");
+            if (idParam != null) {
+                try {
+                    int id = Integer.parseInt(idParam);
+                    Order order = orderDAO.getOrderById(id);
+                    if (order != null && order.getUserId() == user.getId()) {
+                        request.setAttribute("order", order);
+                        request.setAttribute("items", orderItemDAO.getOrderItemsByOrderId(id));
+                        request.getRequestDispatcher("/WEB-INF/my-order-detail.jsp")
+                                .forward(request, response);
+                        return;
+                    }
+                } catch (NumberFormatException ignored) {
+                }
+            }
+            response.sendRedirect(request.getContextPath() + "/my-orders");
         } else {
             response.sendRedirect(request.getContextPath() + "/cart");
         }

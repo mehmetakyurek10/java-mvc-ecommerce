@@ -9,7 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderDAO {
 
@@ -38,14 +40,17 @@ public class OrderDAO {
 
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT * FROM orders ORDER BY order_date DESC";
+        String sql = "SELECT o.*, u.full_name AS customer_name FROM orders o "
+                + "JOIN users u ON u.id = o.user_id ORDER BY o.order_date DESC";
 
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
                 ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                orders.add(mapResultSetToOrder(rs));
+                Order o = mapResultSetToOrder(rs);
+                o.setCustomerName(rs.getString("customer_name"));
+                orders.add(o);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -73,7 +78,8 @@ public class OrderDAO {
     }
 
     public Order getOrderById(int id) {
-        String sql = "SELECT * FROM orders WHERE id = ?";
+        String sql = "SELECT o.*, u.full_name AS customer_name FROM orders o "
+                + "JOIN users u ON u.id = o.user_id WHERE o.id = ?";
 
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -81,7 +87,9 @@ public class OrderDAO {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return mapResultSetToOrder(rs);
+                    Order o = mapResultSetToOrder(rs);
+                    o.setCustomerName(rs.getString("customer_name"));
+                    return o;
                 }
             }
         } catch (SQLException e) {
@@ -104,6 +112,27 @@ public class OrderDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Map<String, Integer> countOrdersByStatus() {
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        counts.put("BEKLEMEDE", 0);
+        counts.put("HAZIRLANIYOR", 0);
+        counts.put("KARGODA", 0);
+        counts.put("TAMAMLANDI", 0);
+        counts.put("IPTAL", 0);
+
+        String sql = "SELECT status, COUNT(*) c FROM orders GROUP BY status";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                counts.put(rs.getString("status"), rs.getInt("c"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return counts;
     }
 
     private Order mapResultSetToOrder(ResultSet rs) throws SQLException {

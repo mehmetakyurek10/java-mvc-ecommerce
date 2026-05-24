@@ -6,50 +6,13 @@
             <html lang="tr">
 
             <head>
-                <meta charset="UTF-8">
                 <title>Siparişlerim | E-Ticaret</title>
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+                <jsp:include page="/WEB-INF/includes/head-common.jsp" />
             </head>
 
             <body class="d-flex flex-column min-vh-100">
 
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div class="container">
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/">E-Ticaret</a>
-                        <div class="collapse navbar-collapse">
-                            <ul class="navbar-nav me-auto">
-                                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/">Ana
-                                        Sayfa</a></li>
-                                <li class="nav-item"><a class="nav-link"
-                                        href="${pageContext.request.contextPath}/products">Tüm Ürünler</a></li>
-                            </ul>
-                            <ul class="navbar-nav ms-auto">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown">
-                                        <i class="bi bi-person-circle"></i> ${sessionScope.user.fullName}
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <c:if test="${sessionScope.user.role == 'ADMIN'}">
-                                            <li><a class="dropdown-item"
-                                                    href="${pageContext.request.contextPath}/admin/dashboard">Yönetim
-                                                    Paneli</a></li>
-                                        </c:if>
-                                        <li><a class="dropdown-item active"
-                                                href="${pageContext.request.contextPath}/my-orders">Siparişlerim</a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item text-danger"
-                                                href="${pageContext.request.contextPath}/logout">Çıkış Yap</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                <jsp:include page="/WEB-INF/includes/nav-customer.jsp" />
 
                 <div class="container mt-5 flex-grow-1">
                     <h2 class="mb-4"><i class="bi bi-box-seam"></i> Geçmiş Siparişlerim</h2>
@@ -81,6 +44,7 @@
                                                     <th>Tarih</th>
                                                     <th>Toplam Tutar</th>
                                                     <th>Durum</th>
+                                                    <th>Detay</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,16 +66,21 @@
                                                                             class="bi bi-hourglass-split"></i>
                                                                         Beklemede</span>
                                                                 </c:when>
-                                                                <c:when test="${order.status == 'ONAYLANDI'}">
-                                                                    <span class="badge bg-success"><i
-                                                                            class="bi bi-check-circle"></i>
-                                                                        Onaylandı</span>
+                                                                <c:when test="${order.status == 'HAZIRLANIYOR'}">
+                                                                    <span class="badge bg-primary"><i
+                                                                            class="bi bi-box-seam"></i>
+                                                                        Hazırlanıyor</span>
                                                                 </c:when>
-                                                                <c:when test="${order.status == 'KARGOYA VERİLDİ'}">
+                                                                <c:when test="${order.status == 'KARGODA'}">
                                                                     <span class="badge bg-info text-dark"><i
                                                                             class="bi bi-truck"></i> Kargoda</span>
                                                                 </c:when>
-                                                                <c:when test="${order.status == 'İPTAL EDİLDİ'}">
+                                                                <c:when test="${order.status == 'TAMAMLANDI'}">
+                                                                    <span class="badge bg-success"><i
+                                                                            class="bi bi-check-circle"></i>
+                                                                        Tamamlandı</span>
+                                                                </c:when>
+                                                                <c:when test="${order.status == 'IPTAL'}">
                                                                     <span class="badge bg-danger"><i
                                                                             class="bi bi-x-circle"></i> İptal</span>
                                                                 </c:when>
@@ -120,6 +89,12 @@
                                                                         class="badge bg-secondary">${order.status}</span>
                                                                 </c:otherwise>
                                                             </c:choose>
+                                                        </td>
+                                                        <td>
+                                                            <a href="${pageContext.request.contextPath}/my-order-detail?id=${order.id}"
+                                                                class="btn btn-sm btn-outline-primary">
+                                                                <i class="bi bi-eye"></i> Detay
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

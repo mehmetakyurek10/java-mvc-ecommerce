@@ -8,6 +8,7 @@ public class OrderItem {
     private int quantity;
     private double unitPrice;
     private double subtotal;
+    private String productName;
 
     public OrderItem() {
     }
@@ -75,5 +76,13 @@ public class OrderItem {
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

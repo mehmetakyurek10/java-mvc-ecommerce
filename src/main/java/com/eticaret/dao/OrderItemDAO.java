@@ -28,7 +28,8 @@ public class OrderItemDAO {
 
     public List<OrderItem> getOrderItemsByOrderId(int orderId) {
         List<OrderItem> items = new ArrayList<>();
-        String sql = "SELECT * FROM order_items WHERE order_id = ?";
+        String sql = "SELECT oi.*, p.name AS product_name FROM order_items oi "
+                + "JOIN products p ON p.id = oi.product_id WHERE oi.order_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -43,6 +44,7 @@ public class OrderItemDAO {
                     item.setQuantity(rs.getInt("quantity"));
                     item.setUnitPrice(rs.getDouble("unit_price"));
                     item.setSubtotal(rs.getDouble("subtotal"));
+                    item.setProductName(rs.getString("product_name"));
                     items.add(item);
                 }
             }

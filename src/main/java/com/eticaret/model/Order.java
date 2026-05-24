@@ -9,6 +9,7 @@ public class Order {
     private Timestamp orderDate;
     private double totalAmount;
     private String status;
+    private String customerName;
 
     public Order() {
     }
@@ -65,5 +66,13 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

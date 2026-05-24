@@ -36,13 +36,21 @@ public class AdminCategoryServlet extends HttpServlet {
             String name = request.getParameter("name");
             String desc = request.getParameter("description");
             boolean isActive = request.getParameter("isActive") != null;
-            categoryDAO.addCategory(new Category(name, desc, isActive));
+            if (name == null || name.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/admin/categories?error=invalid");
+                return;
+            }
+            categoryDAO.addCategory(new Category(name.trim(), desc, isActive));
         } else if ("update".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             String desc = request.getParameter("description");
             boolean isActive = request.getParameter("isActive") != null;
-            categoryDAO.updateCategory(new Category(id, name, desc, isActive));
+            if (name == null || name.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/admin/categories?error=invalid");
+                return;
+            }
+            categoryDAO.updateCategory(new Category(id, name.trim(), desc, isActive));
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             categoryDAO.deleteCategory(id);

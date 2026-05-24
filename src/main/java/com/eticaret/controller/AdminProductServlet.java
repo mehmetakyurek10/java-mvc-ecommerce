@@ -45,6 +45,11 @@ public class AdminProductServlet extends HttpServlet {
             String imageUrl = request.getParameter("imageUrl");
             boolean isActive = request.getParameter("isActive") != null;
 
+            if (name == null || name.trim().isEmpty() || price <= 0 || stock < 0) {
+                response.sendRedirect(request.getContextPath() + "/admin/products?error=invalid");
+                return;
+            }
+
             if ("add".equals(action)) {
                 productDAO.addProduct(new Product(categoryId, name, desc, price, stock, imageUrl, isActive));
             } else {

@@ -35,6 +35,16 @@ public class RegisterServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
 
+        if (fullName == null || fullName.trim().isEmpty()
+                || email == null || email.trim().isEmpty()
+                || password == null || password.length() < 6
+                || !email.contains("@")) {
+            request.setAttribute("errorMessage",
+                    "Ad-soyad ve geçerli bir e-posta zorunludur, şifre en az 6 karakter olmalı.");
+            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+            return;
+        }
+
         if (userDAO.isEmailExists(email)) {
             request.setAttribute("errorMessage", "Bu e-posta adresi zaten sistemde kayıtlı.");
             request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);

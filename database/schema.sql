@@ -1,17 +1,9 @@
--- ============================================================
--- E-Ticaret Portal Veritabanı Şeması
--- ============================================================
-
--- Eski veritabanı varsa sil ve yeniden oluştur
 DROP DATABASE IF EXISTS ecommerce_db;
 
 CREATE DATABASE ecommerce_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE ecommerce_db;
 
--- ============================================================
--- USERS Tablosu
--- ============================================================
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
@@ -23,9 +15,6 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================================
--- CATEGORIES Tablosu
--- ============================================================
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -33,9 +22,6 @@ CREATE TABLE categories (
     is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
--- ============================================================
--- PRODUCTS Tablosu
--- ============================================================
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
@@ -49,9 +35,6 @@ CREATE TABLE products (
     FOREIGN KEY (category_id) REFERENCES categories (id)
 );
 
--- ============================================================
--- ORDERS Tablosu
--- ============================================================
 CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -67,9 +50,6 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
--- ============================================================
--- ORDER_ITEMS Tablosu
--- ============================================================
 CREATE TABLE order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -81,35 +61,15 @@ CREATE TABLE order_items (
     FOREIGN KEY (product_id) REFERENCES products (id)
 );
 
--- ============================================================
--- ÖRNEK VERİLER
--- ============================================================
+CREATE TABLE favorites (
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, product_id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+);
 
--- Admin kullanıcı (şifre: admin123 — daha sonra BCrypt ile hashlenecek)
-INSERT INTO
-    users (
-        full_name,
-        email,
-        password,
-        phone,
-        role
-    )
-VALUES (
-        'Admin User',
-        'admin@eticaret.com',
-        'admin123',
-        '5551234567',
-        'ADMIN'
-    ),
-    (
-        'Ahmet Yılmaz',
-        'ahmet@example.com',
-        'user123',
-        '5559876543',
-        'CUSTOMER'
-    );
-
--- Kategoriler
 INSERT INTO
     categories (name, description)
 VALUES (
@@ -133,7 +93,6 @@ VALUES (
         'Erkek ve kadın giyim'
     );
 
--- Ürünler
 INSERT INTO
     products (
         category_id,
@@ -149,7 +108,7 @@ VALUES (
         'Apple iPhone 15, 128 GB, Siyah',
         45000.00,
         10,
-        'iphone15.jpg'
+        'https://images.unsplash.com/photo-1592286927505-1def25115558?w=600&q=80'
     ),
     (
         1,
@@ -157,7 +116,7 @@ VALUES (
         'Samsung Galaxy S24, 256 GB',
         38000.00,
         15,
-        'galaxys24.jpg'
+        'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&q=80'
     ),
     (
         2,
@@ -165,7 +124,7 @@ VALUES (
         '13 inç, 8GB RAM, 256GB SSD',
         55000.00,
         5,
-        'macbookair.jpg'
+        'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80'
     ),
     (
         2,
@@ -173,7 +132,7 @@ VALUES (
         'i5, 16GB RAM, 512GB SSD',
         28000.00,
         8,
-        'thinkpad.jpg'
+        'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80'
     ),
     (
         3,
@@ -181,7 +140,7 @@ VALUES (
         'Bluetooth 5.0, gürültü engelleme',
         1200.00,
         30,
-        'kulaklik.jpg'
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80'
     ),
     (
         3,
@@ -189,7 +148,7 @@ VALUES (
         'Geniş oyuncu mouse pad',
         250.00,
         50,
-        'mousepad.jpg'
+        'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&q=80'
     ),
     (
         4,
@@ -197,7 +156,7 @@ VALUES (
         'Fyodor Dostoyevski klasik romanı',
         80.00,
         100,
-        'sucveceza.jpg'
+        'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=600&q=80'
     ),
     (
         4,
@@ -205,7 +164,7 @@ VALUES (
         'Java SE temel ders kitabı',
         150.00,
         25,
-        'javabook.jpg'
+        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80'
     ),
     (
         5,
@@ -213,7 +172,7 @@ VALUES (
         '%100 pamuk, beyaz',
         200.00,
         40,
-        'tisort.jpg'
+        'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80'
     ),
     (
         5,
@@ -221,5 +180,5 @@ VALUES (
         'Yün karışımı, kahverengi',
         350.00,
         20,
-        'kazak.jpg'
+        'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80'
     );

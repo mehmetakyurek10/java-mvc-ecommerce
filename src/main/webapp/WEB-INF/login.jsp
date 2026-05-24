@@ -5,23 +5,22 @@
         <html lang="tr">
 
         <head>
-            <meta charset="UTF-8">
             <title>Giriş Yap | E-Ticaret</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <jsp:include page="/WEB-INF/includes/head-common.jsp" />
         </head>
 
-        <body class="bg-light">
+        <body class="auth-page">
 
-            <div class="container mt-5">
+            <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-5">
 
                         <div class="text-center mb-4">
                             <a href="${pageContext.request.contextPath}/"
-                                class="text-decoration-none text-dark display-6 fw-bold">E-Ticaret</a>
+                                class="text-decoration-none navbar-brand fs-1">E-Ticaret</a>
                         </div>
 
-                        <div class="card shadow">
+                        <div class="card shadow auth-card">
                             <div class="card-header bg-white text-center py-3">
                                 <h4 class="mb-0">Hesabınıza Giriş Yapın</h4>
                             </div>

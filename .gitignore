@@ -16,3 +16,5 @@ Thumbs.db
 *.log
 
 db.properties
+
+redeploy.ps1

@@ -6,26 +6,13 @@
             <html lang="tr">
 
             <head>
-                <meta charset="UTF-8">
                 <title>Sepetim | E-Ticaret</title>
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+                <jsp:include page="/WEB-INF/includes/head-common.jsp" />
             </head>
 
             <body class="d-flex flex-column min-vh-100">
 
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div class="container">
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/">E-Ticaret</a>
-                        <div class="collapse navbar-collapse">
-                            <ul class="navbar-nav me-auto">
-                                <li class="nav-item"><a class="nav-link"
-                                        href="${pageContext.request.contextPath}/products">Alışverişe Devam Et</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                <jsp:include page="/WEB-INF/includes/nav-customer.jsp" />
 
                 <div class="container mt-5 flex-grow-1">
                     <h2 class="mb-4"><i class="bi bi-cart"></i> Alışveriş Sepetim</h2>

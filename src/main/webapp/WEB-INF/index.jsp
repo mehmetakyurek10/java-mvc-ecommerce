@@ -6,122 +6,67 @@
             <html lang="tr">
 
             <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Lezzet Dünyası | E-Ticaret</title>
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+                <title>Ana Sayfa | E-Ticaret</title>
+                <jsp:include page="/WEB-INF/includes/head-common.jsp" />
             </head>
 
             <body>
 
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div class="container">
-                        <a class="navbar-brand" href="${pageContext.request.contextPath}/">E-Ticaret</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNav">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav me-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="${pageContext.request.contextPath}/">Ana Sayfa</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="${pageContext.request.contextPath}/products">Tüm
-                                        Ürünler</a>
-                                </li>
-
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                        data-bs-toggle="dropdown">
-                                        Kategoriler
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <c:forEach var="category" items="${categories}">
-                                            <li><a class="dropdown-item"
-                                                    href="${pageContext.request.contextPath}/products?category=${category.id}">${category.name}</a>
-                                            </li>
-                                        </c:forEach>
-                                    </ul>
-                                </li>
-                            </ul>
-
-                            <ul class="navbar-nav ms-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="${pageContext.request.contextPath}/cart">
-                                        <i class="bi bi-cart"></i> Sepetim
-                                        <c:if test="${not empty sessionScope.cart}">
-                                            <span
-                                                class="badge bg-danger rounded-pill">${sessionScope.cart.size()}</span>
-                                        </c:if>
-                                    </a>
-                                </li>
-
-                                <c:choose>
-                                    <c:when test="${not empty sessionScope.user}">
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                                <i class="bi bi-person-circle"></i> ${sessionScope.user.fullName}
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <c:if test="${sessionScope.user.role == 'ADMIN'}">
-                                                    <li><a class="dropdown-item"
-                                                            href="${pageContext.request.contextPath}/admin/dashboard">Yönetim
-                                                            Paneli</a></li>
-                                                </c:if>
-                                                <li><a class="dropdown-item"
-                                                        href="${pageContext.request.contextPath}/my-orders">Siparişlerim</a>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li><a class="dropdown-item text-danger"
-                                                        href="${pageContext.request.contextPath}/logout">Çıkış Yap</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="${pageContext.request.contextPath}/login">Giriş
-                                                Yap</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="btn btn-outline-light btn-sm mt-1 ms-2"
-                                                href="${pageContext.request.contextPath}/register">Kayıt Ol</a>
-                                        </li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                <jsp:include page="/WEB-INF/includes/nav-customer.jsp" />
 
                 <div class="container mt-5 mb-5">
 
-                    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm text-center">
-                        <h1 class="display-5 fw-bold">Hoş Geldiniz!</h1>
-                        <p class="col-md-8 fs-4 mx-auto">En yeni teknolojiler ve trend ürünler en uygun fiyatlarla
-                            burada.</p>
-                        <a href="${pageContext.request.contextPath}/products" class="btn btn-primary btn-lg">Ürünleri
-                            İncele</a>
+                    <div class="hero-gradient text-center mb-5">
+                        <h1 class="display-4 mb-3">Hoş Geldiniz <i class="bi bi-stars"></i></h1>
+                        <p class="col-md-8 fs-5 mx-auto mb-4" style="opacity:.9;">En yeni teknolojiler ve trend
+                            ürünler en uygun fiyatlarla burada.</p>
+                        <a href="${pageContext.request.contextPath}/products"
+                            class="btn btn-light btn-lg fw-semibold px-4">
+                            <i class="bi bi-bag-heart"></i> Ürünleri İncele
+                        </a>
                     </div>
 
                     <h2 class="mb-4">Öne Çıkan Ürünler</h2>
 
                     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
                         <c:forEach var="product" items="${products}">
+                            <c:set var="isFav" value="${favoriteIds.contains(product.id)}" />
                             <div class="col">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="https://via.placeholder.com/300x200?text=${product.name}"
-                                        class="card-img-top" alt="${product.name}">
+                                <div class="card h-100 shadow-sm position-relative">
+                                    <c:if test="${not empty sessionScope.user}">
+                                        <form action="${pageContext.request.contextPath}/favorite-toggle"
+                                            method="post"
+                                            class="position-absolute top-0 start-0 m-2" style="z-index:2;">
+                                            <input type="hidden" name="productId" value="${product.id}">
+                                            <input type="hidden" name="redirect" value="/">
+                                            <button type="submit"
+                                                class="btn btn-sm ${isFav ? 'btn-danger' : 'btn-light'}"
+                                                title="${isFav ? 'Favoriden çıkar' : 'Favorilere ekle'}">
+                                                <i class="bi ${isFav ? 'bi-heart-fill' : 'bi-heart'}"></i>
+                                            </button>
+                                        </form>
+                                    </c:if>
+                                    <img src="${product.imageUrl}"
+                                        class="card-img-top" alt="${product.name}"
+                                        style="height: 200px; object-fit: cover; background:#e9ecef;"
+                                        onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 200%22><rect width=%22300%22 height=%22200%22 fill=%22%23e9ecef%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 fill=%22%236c757d%22 font-family=%22sans-serif%22 font-size=%2218%22>Görsel Yok</text></svg>'">
 
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">${product.name}</h5>
                                         <p class="card-text text-muted small">${product.description}</p>
+
+                                        <p class="small mb-2">
+                                            <c:choose>
+                                                <c:when test="${product.stock > 0}">
+                                                    <span class="text-success"><i class="bi bi-check-circle"></i>
+                                                        Stokta (${product.stock} adet)</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="text-danger"><i class="bi bi-x-circle"></i>
+                                                        Stokta Yok</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </p>
 
                                         <h5 class="text-success mt-auto mb-3">
                                             <fmt:formatNumber value="${product.price}" type="currency"
@@ -155,8 +100,25 @@
                     </div>
                 </div>
 
-                <footer class="bg-dark text-white text-center py-3 mt-auto">
-                    <p class="mb-0">&copy; 2026 E-Ticaret Portalı. Tüm Hakları Saklıdır.</p>
+                <footer class="bg-dark text-white mt-5">
+                    <div class="container py-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center text-md-start">
+                                <span class="navbar-brand fs-4">E-Ticaret</span>
+                            </div>
+                            <div class="col-md-4 text-center small">
+                                <a href="${pageContext.request.contextPath}/" class="text-white-50 me-3">Ana
+                                    Sayfa</a>
+                                <a href="${pageContext.request.contextPath}/products"
+                                    class="text-white-50 me-3">Ürünler</a>
+                                <a href="${pageContext.request.contextPath}/cart"
+                                    class="text-white-50">Sepetim</a>
+                            </div>
+                            <div class="col-md-4 text-center text-md-end small text-white-50">
+                                &copy; 2026 E-Ticaret Portalı
+                            </div>
+                        </div>
+                    </div>
                 </footer>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
