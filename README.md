@@ -255,4 +255,4 @@ incelenebilir.
 ## 👤 Geliştirici
 
 **Mehmet Akyürek**
-GitHub: [@mehmetakyurek1](https://github.com/mehmetakyurek10)
+GitHub: [@mehmetakyurek10](https://github.com/mehmetakyurek10)
