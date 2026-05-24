@@ -41,16 +41,16 @@ projesi olarak hazırlanmıştır.
 
 ## 🛠 Teknolojiler
 
-| Katman | Teknoloji |
-|---|---|
-| Backend | Java 21, Jakarta Servlet 6.0 |
-| View | JSP, JSTL 3.0 |
-| DB | MySQL 8.0, JDBC |
-| Güvenlik | jBCrypt 0.4 |
-| Frontend | Bootstrap 5.3, Bootstrap Icons, Chart.js 4.4 |
-| Font | Google Fonts — Inter |
-| Build | Maven 3.9 |
-| Container | Apache Tomcat 10.1 |
+| Katman    | Teknoloji                                    |
+| --------- | -------------------------------------------- |
+| Backend   | Java 21, Jakarta Servlet 6.0                 |
+| View      | JSP, JSTL 3.0                                |
+| DB        | MySQL 8.0, JDBC                              |
+| Güvenlik  | jBCrypt 0.4                                  |
+| Frontend  | Bootstrap 5.3, Bootstrap Icons, Chart.js 4.4 |
+| Font      | Google Fonts — Inter                         |
+| Build     | Maven 3.9                                    |
+| Container | Apache Tomcat 10.1                           |
 
 > Spring Boot, Hibernate, JPA, React, Angular, Vue kullanılmamıştır.
 
@@ -159,10 +159,10 @@ http://localhost:8080/ecommerce/
 Uygulama ilk çalıştırıldığında `DataInitializer` aşağıdaki kullanıcıları
 otomatik olarak oluşturur (BCrypt hashlenmiş şifrelerle):
 
-| Rol | E-posta | Şifre |
-|---|---|---|
-| 🛡️ **Admin** | `admin@eticaret.com` | `admin123` |
-| 👤 **Müşteri** | `ahmet@example.com` | `user123` |
+| Rol            | E-posta              | Şifre      |
+| -------------- | -------------------- | ---------- |
+| 🛡️ **Admin**   | `admin@eticaret.com` | `admin123` |
+| 👤 **Müşteri** | `ahmet@example.com`  | `user123`  |
 
 ---
 
@@ -227,21 +227,21 @@ Tüm stiller `src/main/webapp/css/style.css` içinde, CSS custom property
 
 ## ✅ PDF Gereksinim Karşılama
 
-| PDF Maddesi | Durum |
-|---|---|
-| MVC mimarisi | ✅ |
-| Servlet, JSP, JSTL kullanımı | ✅ |
-| 5 zorunlu DB tablosu | ✅ |
-| Müşteri: liste/filtre/detay/sepet/sipariş/kayıt/giriş | ✅ |
-| Admin: ürün/kategori/sipariş/kullanıcı yönetimi | ✅ |
-| Form doğrulama (istemci + sunucu) | ✅ |
-| Session kullanımı | ✅ |
-| **Bonus:** ürün arama | ✅ |
-| **Bonus:** BCrypt hashleme | ✅ |
-| **Bonus:** sipariş durumu renkli gösterim | ✅ |
-| **Bonus:** admin grafiksel özet | ✅ |
-| **Bonus:** sayfalama | ✅ |
-| **Bonus:** ürün favorileme | ✅ |
+| PDF Maddesi                                           | Durum |
+| ----------------------------------------------------- | ----- |
+| MVC mimarisi                                          | ✅    |
+| Servlet, JSP, JSTL kullanımı                          | ✅    |
+| 5 zorunlu DB tablosu                                  | ✅    |
+| Müşteri: liste/filtre/detay/sepet/sipariş/kayıt/giriş | ✅    |
+| Admin: ürün/kategori/sipariş/kullanıcı yönetimi       | ✅    |
+| Form doğrulama (istemci + sunucu)                     | ✅    |
+| Session kullanımı                                     | ✅    |
+| **Bonus:** ürün arama                                 | ✅    |
+| **Bonus:** BCrypt hashleme                            | ✅    |
+| **Bonus:** sipariş durumu renkli gösterim             | ✅    |
+| **Bonus:** admin grafiksel özet                       | ✅    |
+| **Bonus:** sayfalama                                  | ✅    |
+| **Bonus:** ürün favorileme                            | ✅    |
 
 ---
 
@@ -255,4 +255,4 @@ incelenebilir.
 ## 👤 Geliştirici
 
 **Mehmet Akyürek**
-GitHub: [@mehmetakyurek1](https://github.com/mehmetakyurek1)
+GitHub: [@mehmetakyurek1](https://github.com/mehmetakyurek10)
