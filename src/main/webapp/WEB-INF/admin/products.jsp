@@ -29,6 +29,30 @@
     </nav>
 
     <div class="container-fluid px-4">
+        <c:if test="${param.msg == 'deleted'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle"></i> Ürün kalıcı olarak silindi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+        <c:if test="${param.error == 'hasOrders'}">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> Bu ürün geçmiş siparişlerde kullanıldığı için kalıcı olarak silinemez. Onun yerine "Pasif Yap" seçeneğini kullanabilirsiniz.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+        <c:if test="${param.error == 'deleteFailed'}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-x-circle"></i> Ürün silinemedi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+        <c:if test="${param.error == 'invalid'}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-x-circle"></i> Geçersiz ürün bilgisi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
         <div class="row">
             <div class="col-md-3">
                 <div class="card shadow-sm">
@@ -112,19 +136,26 @@
                                                     data-bs-toggle="modal" data-bs-target="#editModal${prod.id}">
                                                     <i class="bi bi-pencil"></i> Düzenle
                                                 </button>
-                                                <c:choose>
-                                                    <c:when test="${prod.active}">
-                                                        <form action="${pageContext.request.contextPath}/admin/products"
-                                                            method="post" style="display:inline;"
-                                                            onsubmit="return confirm('Ürün pasif yapılacak. Emin misin?');">
-                                                            <input type="hidden" name="action" value="delete">
-                                                            <input type="hidden" name="id" value="${prod.id}">
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                                <i class="bi bi-eye-slash"></i> Pasif Yap
-                                                            </button>
-                                                        </form>
-                                                    </c:when>
-                                                </c:choose>
+                                                <c:if test="${prod.active}">
+                                                    <form action="${pageContext.request.contextPath}/admin/products"
+                                                        method="post" style="display:inline;"
+                                                        onsubmit="return confirm('Ürün pasif yapılacak. Emin misin?');">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="id" value="${prod.id}">
+                                                        <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                                            <i class="bi bi-eye-slash"></i> Pasif Yap
+                                                        </button>
+                                                    </form>
+                                                </c:if>
+                                                <form action="${pageContext.request.contextPath}/admin/products"
+                                                    method="post" style="display:inline;"
+                                                    onsubmit="return confirm('Bu ürün KALICI olarak silinecek. Geri alınamaz! (Siparişlerde kullanıldıysa silinemez.) Devam edilsin mi?');">
+                                                    <input type="hidden" name="action" value="hardDelete">
+                                                    <input type="hidden" name="id" value="${prod.id}">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash"></i> Sil
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
 

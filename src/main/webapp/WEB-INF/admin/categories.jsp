@@ -31,6 +31,30 @@
     </nav>
 
     <div class="container">
+        <c:if test="${param.msg == 'deleted'}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle"></i> Kategori kalıcı olarak silindi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+        <c:if test="${param.error == 'hasProducts'}">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> Bu kategoriye bağlı ürünler olduğu için kalıcı olarak silinemez. Önce ürünleri silin veya başka kategoriye taşıyın; ya da "Pasif" seçeneğini kullanın.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+        <c:if test="${param.error == 'deleteFailed'}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-x-circle"></i> Kategori silinemedi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
+        <c:if test="${param.error == 'invalid'}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-x-circle"></i> Geçersiz kategori bilgisi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </c:if>
         <div class="row">
             <div class="col-md-4">
                 <div class="card shadow-sm">
@@ -91,11 +115,20 @@
                                                     onsubmit="return confirm('Kategori pasif yapılacak. Emin misin?');">
                                                     <input type="hidden" name="action" value="delete">
                                                     <input type="hidden" name="id" value="${cat.id}">
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
                                                         <i class="bi bi-eye-slash"></i> Pasif
                                                     </button>
                                                 </form>
                                             </c:if>
+                                            <form action="${pageContext.request.contextPath}/admin/categories"
+                                                method="post" style="display:inline;"
+                                                onsubmit="return confirm('Bu kategori KALICI olarak silinecek. Geri alınamaz! (İçinde ürün varsa silinemez.) Devam edilsin mi?');">
+                                                <input type="hidden" name="action" value="hardDelete">
+                                                <input type="hidden" name="id" value="${cat.id}">
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-trash"></i> Sil
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
 

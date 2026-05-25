@@ -60,6 +60,18 @@ public class AdminProductServlet extends HttpServlet {
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             productDAO.deleteProduct(id);
+        } else if ("hardDelete".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (productDAO.hasOrderItems(id)) {
+                response.sendRedirect(request.getContextPath() + "/admin/products?error=hasOrders");
+                return;
+            }
+            if (productDAO.hardDeleteProduct(id)) {
+                response.sendRedirect(request.getContextPath() + "/admin/products?msg=deleted");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/admin/products?error=deleteFailed");
+            }
+            return;
         }
 
         response.sendRedirect(request.getContextPath() + "/admin/products");

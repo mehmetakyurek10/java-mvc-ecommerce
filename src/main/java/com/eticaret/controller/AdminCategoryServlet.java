@@ -54,6 +54,18 @@ public class AdminCategoryServlet extends HttpServlet {
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             categoryDAO.deleteCategory(id);
+        } else if ("hardDelete".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (categoryDAO.hasProducts(id)) {
+                response.sendRedirect(request.getContextPath() + "/admin/categories?error=hasProducts");
+                return;
+            }
+            if (categoryDAO.hardDeleteCategory(id)) {
+                response.sendRedirect(request.getContextPath() + "/admin/categories?msg=deleted");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/admin/categories?error=deleteFailed");
+            }
+            return;
         }
 
         response.sendRedirect(request.getContextPath() + "/admin/categories");

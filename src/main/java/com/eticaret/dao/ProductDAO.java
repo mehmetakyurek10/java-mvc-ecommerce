@@ -142,6 +142,32 @@ public class ProductDAO {
         return false;
     }
 
+    public boolean hasOrderItems(int productId) {
+        String sql = "SELECT COUNT(*) FROM order_items WHERE product_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, productId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean hardDeleteProduct(int id) {
+        String sql = "DELETE FROM products WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean updateStock(int productId, int quantityToReduce, Connection conn) throws SQLException {
         String sql = "UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?";
 
