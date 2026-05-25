@@ -83,7 +83,6 @@ java-mvc-ecommerce/
 │           ├── includes/       # Ortak JSP fragment'ları
 │           └── web.xml
 ├── pom.xml
-├── REPORT.md                   # Proje raporu
 └── README.md
 ```
 
